@@ -231,7 +231,9 @@
       [devexpress/column {:dataField "customer"
                           :caption "Customer"}]
       [devexpress/column {:dataField "url"
-                          :caption "URL"}]
+                          :caption "URL"
+                          :cellRender (fn [data]
+                                        (reagent/as-element [:a {:href (.-value data)} "Link"]))}]
       [devexpress/column {:dataField "active"
                           :caption "Active"
                           :visible false}]])])
@@ -247,6 +249,25 @@
    #_[basic-table-with-sorting-and-paging]
    [basic-table-with-column-chooser]])
 
+
+;; data-grid
+;; clicking on rows should be able to trigger re-frame events
+;;  - at the same time we need buttons in the cell to trigger another event
+;; - expand a data-grid row to show details within an entry
+;; - render MUI chips into a grid cell (have it be deletable) -> TagBox
+;; - export: export to excel, CSV, pdf?
+;; - drag & drop to re-order rows
+;; tree-list (for the filter key-value pairs)
+;; data-grid editing
+;; - dropdowns to change a value -> trigger a re-frame event
+;; forms
+;; - dropdowns
+;; - validations & formatting
+;;  - numbers, phone-numbers, postcode, etc.
+;; maps
+;;  - routing and locations (showing details for the locations, clustering)
+;; charts
+;; file-saver for creating the downloadable zip files
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
