@@ -9,11 +9,13 @@
 (def column-chooser (r/adapt-react-class (aget devextreme-react-data-grid "ColumnChooser")))
 (def column-fixing (r/adapt-react-class (aget devextreme-react-data-grid "ColumnFixing")))
 (def data-grid (r/adapt-react-class (aget devextreme-react-data-grid "DataGrid")))
+(def export (r/adapt-react-class (aget devextreme-react-data-grid "Export")))
 (def grouping (r/adapt-react-class (aget devextreme-react-data-grid "Grouping")))
 (def group-panel (r/adapt-react-class (aget devextreme-react-data-grid "GroupPanel")))
 (def pager (r/adapt-react-class (aget devextreme-react-data-grid "Pager")))
 (def paging (r/adapt-react-class (aget devextreme-react-data-grid "Paging")))
 (def search-panel (r/adapt-react-class (aget devextreme-react-data-grid "SearchPanel")))
+(def selection (r/adapt-react-class (aget devextreme-react-data-grid "Selection")))
 (def sorting (r/adapt-react-class (aget devextreme-react-data-grid "Sorting")))
 
 (def tag-box (r/adapt-react-class (aget devextreme-react-tag-box "TagBox")))

@@ -187,7 +187,9 @@
                            "true"
                            "false")})]
      [devexpress/data-grid {:dataSource (clj->js rows)
-                            :showBorders true}
+                            :showBorders true
+                            :onRowClick (fn [data]
+                                          (.log js/console (.-data data)))}
       [devexpress/column-chooser {:enabled true
                                   :mode "select"
                                   :allowSearch true
@@ -242,6 +244,83 @@
                           :caption "Active"
                           :visible false}]])])
 
+(defn basic-table-with-export []
+  [:div
+   [:h1 "Basic table with export"]
+   (let [rows (for [item (range 12)]
+                {:image "https://images.unsplash.com/photo-1513757378314-e46255f6ed16?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2250&q=80"
+                 :product (str "Product " item)
+                 :subProducts (for [sub-product (range (rand-int 5))]
+                                (str "Sub-Product " sub-product))
+                 :region (nth ["APAC" "US" "EUROPE"] (rand-int 3))
+                 :amount (rand-int 100)
+                 :saleDate "22.12.2019"
+                 :customer "John"
+                 :url (str "https://example.org/product" item)
+                 :id item
+                 :active (if (even? (rand-int 2))
+                           "true"
+                           "false")})]
+     [devexpress/data-grid {:dataSource (clj->js rows)
+                            :showBorders true}
+      [devexpress/column-chooser {:enabled true
+                                  :mode "select"
+                                  :allowSearch true
+                                  :title "Custom Title FTW!"}]
+      [devexpress/export {:enabled true
+                          :fileName "Export"
+                          :allowExportSelectedData true}]
+      [devexpress/selection {:mode "multiple"}]
+      [devexpress/paging {:defaultPageSize 10}]
+      [devexpress/pager {:showPageSizeSelector true
+                         :allowedPageSizes (clj->js [5, 10, 20])}]
+      [devexpress/sorting {:mode "multiple"}]
+      [devexpress/column {:dataField "id"
+                          :caption "ID"
+                          :width 50
+                          :defaultSortOrder "desc"}]
+      [devexpress/column {:dataField "image"
+                          :caption "Image"
+                          :cellRender (fn [data]
+                                        (reagent/as-element [:img {:src (.-value data)
+                                                                   :height 40
+                                                                   :width 40}]))
+                          :width 60}]
+      [devexpress/column {:dataField "product"
+                          :caption "Product"}]
+      [devexpress/column {:dataField "subProducts"
+                          :caption "Sub-Products"
+                          :cellRender (fn [data-raw]
+                                        (let [data (js->clj (.-value data-raw) :keywordize-keys true)]
+                                          (reagent/as-element (if-not (= 0 (count data))
+                                                                [devexpress/tag-box
+                                                                 {:style {:border "none"}
+                                                                  :items (clj->js data)
+                                                                  :value (clj->js data)
+                                                                  :readOnly true
+                                                                  :tagRender (fn [tags-raw]
+                                                                               (reagent/as-element [:div {:class "dx-tag-content"
+                                                                                                          :style {:padding-right "6px"}}
+                                                                                                    tags-raw]))}]
+                                                                [:span {:style {:margin-left "4px"}} "No sub-products"]))))}]
+      [devexpress/column {:dataField "region"
+                          :caption "Region"}]
+      [devexpress/column {:dataField "amount"
+                          :caption "Amount"
+                          :width 70}]
+      [devexpress/column {:dataField "saleDate"
+                          :caption "Sale Date"
+                          :dataType "date"}]
+      [devexpress/column {:dataField "customer"
+                          :caption "Customer"}]
+      [devexpress/column {:dataField "url"
+                          :caption "URL"
+                          :cellRender (fn [data]
+                                        (reagent/as-element [:a {:href (.-value data)} "Link"]))}]
+      [devexpress/column {:dataField "active"
+                          :caption "Active"
+                          :visible false}]])])
+
 (defn root-view
   "Render the page"
   []
@@ -251,7 +330,8 @@
                  :paedding "20px"}}
    #_[basic-table]
    #_[basic-table-with-sorting-and-paging]
-   [basic-table-with-column-chooser]])
+   #_[basic-table-with-column-chooser]
+   [basic-table-with-export]])
 
 
 ;; data-grid
