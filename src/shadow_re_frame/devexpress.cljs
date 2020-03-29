@@ -17,6 +17,8 @@
 (def search-panel (r/adapt-react-class (aget devextreme-react-data-grid "SearchPanel")))
 (def selection (r/adapt-react-class (aget devextreme-react-data-grid "Selection")))
 (def sorting (r/adapt-react-class (aget devextreme-react-data-grid "Sorting")))
+(def summary (r/adapt-react-class (aget devextreme-react-data-grid "Summary")))
+(def total-item (r/adapt-react-class (aget devextreme-react-data-grid "TotalItem")))
 
 (def tag-box (r/adapt-react-class (aget devextreme-react-tag-box "TagBox")))
 
