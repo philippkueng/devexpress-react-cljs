@@ -171,7 +171,7 @@
 
 (defn basic-table-with-column-chooser []
   [:div
-   [:h1 "Basic table with column chooser, custom cell render function with a custom tag render function"]
+   [:h1 "Basic table with column chooser, custom cell render function with a custom tag render function and onRow and onCell click handlers (see console)"]
    (let [rows (for [item (range 12)]
                 {:image "https://images.unsplash.com/photo-1513757378314-e46255f6ed16?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2250&q=80"
                  :product (str "Product " item)
@@ -188,8 +188,13 @@
                            "false")})]
      [devexpress/data-grid {:dataSource (clj->js rows)
                             :showBorders true
-                            :onRowClick (fn [data]
-                                          (.log js/console (.-data data)))}
+                            ;; when having both on-row and on-cell click handlers enabled, we need to debounce it elsewhere
+                            :onRowClick (fn [data-raw]
+                                          (let [data (js->clj (.-data data-raw))]
+                                            (.log js/console (clj->js (assoc data :click-type "onRowClick")))))
+                            :onCellClick (fn [data-raw]
+                                           (let [data (js->clj (.-data data-raw))]
+                                             (.log js/console (clj->js (assoc data :click-type "onCellClick")))))}
       [devexpress/column-chooser {:enabled true
                                   :mode "select"
                                   :allowSearch true
@@ -420,10 +425,10 @@
                  :height "100vh"
                  :width "100hw"
                  :paedding "20px"}}
-   #_[basic-table]
-   #_[basic-table-with-sorting-and-paging]
-   #_[basic-table-with-column-chooser]
-   #_[basic-table-with-export]
+   [basic-table]
+   [basic-table-with-sorting-and-paging]
+   [basic-table-with-column-chooser]
+   [basic-table-with-export]
    [basic-table-with-data-summary]])
 
 
