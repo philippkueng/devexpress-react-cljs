@@ -1,5 +1,6 @@
 (ns shadow-re-frame.devexpress
   (:require ["devextreme-react/data-grid.js" :as devextreme-react-data-grid]
+            ["devextreme-react/tag-box.js" :as devextreme-react-tag-box]
             [reagent.core :as r]))
 
 
@@ -14,4 +15,6 @@
 (def paging (r/adapt-react-class (aget devextreme-react-data-grid "Paging")))
 (def search-panel (r/adapt-react-class (aget devextreme-react-data-grid "SearchPanel")))
 (def sorting (r/adapt-react-class (aget devextreme-react-data-grid "Sorting")))
+
+(def tag-box (r/adapt-react-class (aget devextreme-react-tag-box "TagBox")))
 

@@ -171,7 +171,7 @@
 
 (defn basic-table-with-column-chooser []
   [:div
-   [:h1 "Basic table with column chooser and custom cell render function"]
+   [:h1 "Basic table with column chooser, custom cell render function with a custom tag render function"]
    (let [rows (for [item (range 12)]
                 {:image "https://images.unsplash.com/photo-1513757378314-e46255f6ed16?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2250&q=80"
                  :product (str "Product " item)
@@ -214,12 +214,16 @@
                           :cellRender (fn [data-raw]
                                         (let [data (js->clj (.-value data-raw) :keywordize-keys true)]
                                           (reagent/as-element (if-not (= 0 (count data))
-                                                                [:ul {:style {:padding-left 14
-                                                                              :margin 0
-                                                                              :list-style-type "circle"}}
-                                                                 (for [sub-product data]
-                                                                   [:li (:name sub-product)])]
-                                                                [:span "No sub-products"]))))}]
+                                                                [devexpress/tag-box
+                                                                 {:style {:border "none"}
+                                                                  :items (clj->js (map :name data))
+                                                                  :value (clj->js (map :name data))
+                                                                  :readOnly true
+                                                                  :tagRender (fn [tags-raw]
+                                                                               (reagent/as-element [:div {:class "dx-tag-content"
+                                                                                                          :style {:padding-right "6px"}}
+                                                                                                    tags-raw]))}]
+                                                                [:span {:style {:margin-left "4px"}} "No sub-products"]))))}]
       [devexpress/column {:dataField "region"
                           :caption "Region"}]
       [devexpress/column {:dataField "amount"
